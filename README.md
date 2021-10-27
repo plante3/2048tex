@@ -22,4 +22,4 @@ movement:
 
 `bye` or `^D` to quit.
 
-![Demo](https://github.com/plante3/2048tex/demo.gif)
+![Demo](https://github.com/plante3/2048tex/main/demo.gif)
