@@ -1,0 +1,79 @@
+\let~\space \catcode`"\active \def"{''}
+\def\tposul{\techon{\tclearscreen2\tsetxy12}}
+\def\tcborder{\tprefix[48;2;187;173;160m}
+\def\ttbl{\trev\ttbold}
+\def\endgame{bye}
+
+\def\centercell#1{%
+    \ifnum#1=\z@
+        ~~~~~%
+    \else\ifnum#1<4 
+        ~~\centercellval#1~~%
+    \else\ifnum#1<7
+        ~\centercellval#1~~%
+    \else\ifnum#1<10
+        ~\centercellval#1~%
+    \else\ifnum#1<13
+        \centercellval#1~%
+    \else \centercellval#1%
+    \fi\fi\fi\fi\fi
+}
+\def\centercellval#1{%
+    ^^1b[38;2;%
+    \ifnum#1<\thr@@ 119;110;101\else 249;246;242\fi
+    m%
+    \ttbold\getcellval#1\treset\tmpb
+}
+\def\displaycell#1{%
+    \edef\tmpa##1{\tsetxy{\the\numexpr\xx*8+1}{\noexpand\the\numexpr\yy*4+##1}}
+    \edef\tmpb{\getcellcolor#1}%
+    \techo{\tmpa1\tcborder~~~~~~~~~\treset}%
+    \techo{\tmpa2\tcborder~\tmpb~~~~~~~\tcborder~\treset}%
+    \techo{\tmpa3\tcborder~\tmpb~\centercell#1~\tcborder~\treset}%
+    \techo{\tmpa4\tcborder~\tmpb~~~~~~~\tcborder~\treset}%
+    \techo{\tmpa5\tcborder~~~~~~~~~\treset}%
+}
+\def\displayboard{%
+    \techon{\tsetxy{\the\numexpr\boardsize*8+4}1\ttbold Score\treset: \ttcolorb{yellow}\the\score\treset \tsetxy12}%
+    \let\do\displaycell \doboard
+}
+
+\def\getcellval#1{%
+    \ifcase#1 %
+    \or 2\or 4\or 8\or 16\or 32\or 64\or 128\or 256\or 512\or 1024\or 2048\or 4096\or 16384\or 32767\or 65536\or 131072\fi
+}
+\def\getcellcolor#1{%
+    \tprefix[48;2;\ifcase#1 %
+    205;193;180%     empty
+    \or 238;228;218% 2
+    \or 237;224;200% 4
+    \or 242;177;121% 8
+    \or 245;149;99%  16
+    \or 246;124;96%  32
+    \or 246;94;59%   64
+    \or 237;207;115% 128
+    \or 237;204;98%  256
+    \or 237;200;80%  512
+    \or 237;197;63%  1024
+    \or 237;194;45%  2048
+    \else 64;56;53%
+    \fi
+    m%
+}
+
+\def\readin{\afterassignment\take \read\m@ne to\in}
+\def\take{%
+    \ifx\endgame\in
+        \n\n\techo{Goodbye.\tprefix[?25l}\n\n
+        \csname bye\expandafter\endcsname
+    \else
+        \if\relax\expandafter\@gobble\in!\relax
+            \expandafter\expandafter\expandafter \readin
+        \else
+        \techon{\tclearscreen0}%
+        \afterfi\afterfi
+            \expandafter\boardsend \romannumeral-`0\expandafter\@car\in\@nil
+            \readin
+        \fi
+    \fi
+}

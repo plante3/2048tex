@@ -1,0 +1,130 @@
+\newcount\score \newcount\xx \newcount\yy \newtoks\cells
+
+\def\currcell{\csname board/\the\xx:\the\yy \endcsname}
+\def\setcurrcell#{\expandafter\expandafter\expandafter\edef\currcell}
+\def\doboard{%
+    \xx\z@ \yy\z@
+    \loop
+        \xx\z@{\loop
+        \expandafter\expandafter\expandafter\do \currcell
+        \advance\xx\@ne \ifnum\xx<\boardsize\repeat}%
+        \advance\yy\@ne
+    \ifnum\yy<\boardsize\repeat
+}
+\def\boardsend#1{%
+    \if h#1
+        \let\next\boardml
+    \else\if j#1
+        \let\next\boardmd
+    \else\if k#1
+        \let\next\boardmu
+    \else\if l#1
+        \let\next\boardmr
+    \else \let\next\boardunknown
+    \fi\fi\fi\fi \next
+}
+\def\boardunknown{\techo{\ttcolorb{red}Unrecognized input: \in\treset}}
+
+\def\wrcell#1#2{%
+    #1#2\boardsize{%
+        \global\setcurrcell{\expandafter\@car\tmpa\@nil}%
+        \edef\tmpa{\expandafter\@cdr\tmpa\@nil}%
+    }%
+}
+
+\def\boardml{%
+    \cells{}%
+    \qloop\yy\boardsize{%
+        \tmptokA{}%
+        {%
+        \qloop\xx\boardsize{%
+            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
+            \setcurrcell{0}%
+        }%
+        \squish
+        \wrcell\qloop\xx
+        }%
+    }\randins \displayboard
+}
+\def\boardmd{%
+    \cells{}%
+    \qloop\xx\boardsize{%
+        \tmptokA{}%
+        {%
+        \rloop\yy\boardsize{%
+            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
+            \setcurrcell{0}%
+        }%
+        \squish
+        \wrcell\rloop\yy
+        }%
+    }\randins \displayboard
+}
+\def\boardmu{%
+    \cells{}%
+    \qloop\xx\boardsize{%
+        \tmptokA{}%
+        {%
+        \qloop\yy\boardsize{%
+            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
+            \setcurrcell{0}%
+        }%
+        \squish
+        \wrcell\qloop\yy
+        }%
+    }\randins \displayboard
+}
+\def\boardmr{%
+    \cells{}%
+    \qloop\yy\boardsize{%
+        \tmptokA{}%
+        {%
+        \rloop\xx\boardsize{%
+            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
+            \setcurrcell{0}%
+        }%
+        \squish
+        \wrcell\rloop\xx
+        }%
+    }\randins \displayboard
+}
+
+% \merge{{0}{1}{1}{0}{3}{0}{3}{4}{0}} -> {2}{5} @ \the\out
+\newtoks\out
+\def\merge#1{\out{}\mergeA0#1\relax}
+\def\mergeA#1#2{%
+    \ifx\relax#2\toksapp\out{{#1}}\else
+        \ifx0#2\def\next{\mergeA{#1}}\else
+        \ifnum#1=#2\edef\next{\noexpand\mergeA{\the\numexpr1+#1}}\global\advance\score\getcellval{\numexpr1+#1}\else
+        \ifnum#1=\z@\else \toksapp\out{{#1}}\fi \def\next{\mergeA{#2}}\fi\fi
+        \expandafter\next
+    \fi
+}
+\def\squish{\out\tmptokA \squishA}
+\def\squishA{%
+    \edef\tmpa{\the\out}%
+    \expandafter\merge\expandafter{\the\out}%
+    \edef\tmpb{\the\out}%
+    \ifx\tmpa\tmpb
+        \tmpcntA \expandafter\len\expandafter{\the\out}%
+        \edef\tmpa{\the\out\replicate{\boardsize-\tmpcntA}{{0}}}%
+    \else \expandafter\squishA \fi
+}
+
+\def\randins{%
+    \tmpcntA\z@
+    \let\do\randinsA \doboard
+    \tmpcntA\pdfuniformdeviate\tmpcntA \tmpcntB\z@
+    \let\do\randinsB \doboard
+}
+\def\randinsA#1{\ifnum#1=\z@ \global\advance\tmpcntA\@ne \fi}
+\def\randinsB#1{\ifnum#1=\z@ \ifnum\tmpcntA=\tmpcntB \xdef#1{\the\numexpr\@ne+\pdfuniformdeviate\tw@}\fi \global\advance\tmpcntB\@ne \fi}
+
+\def\boardinit{%
+    \score\z@
+    \chardef\boardsize=\if\relax\in\relax 4\else \in\fi
+    \def\do##1{\gdef##1{0}}\doboard
+    \randins
+    \tposul \displayboard \readin
+}
+\def\init{\afterassignment\boardinit \read\m@ne to\in}

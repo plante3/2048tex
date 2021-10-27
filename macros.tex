@@ -1,0 +1,69 @@
+\catcode`@=11
+
+\def\@firstofone#1{#1}
+\def\@firstoftwo#1#2{#1}
+\def\@secondoftwo#1#2{#2}
+\def\@gobble#1{}
+\def\@car#1#2\@nil{#1}
+\def\@cdr#1#2\@nil{#2}
+
+\def\toksapp#1#2{#1\expandafter{\the#1#2}}
+
+\newcount\tmpcntA \newcount\tmpcntB
+\newtoks\tmptokA
+
+\edef\bs{\expandafter\@gobble\string\\}
+
+\def\csarg#1#2{\expandafter#1\csname#2\endcsname}
+\protected\def\csdef {\csarg\def}
+\protected\def\csedef{\csarg\edef}
+\protected\def\csgdef{\csarg\gdef}
+\protected\def\csxdef{\csarg\xdef}
+\protected\def\cslet {\csarg\let}
+
+\def\replicate#1{\expandafter\r@plicate\romannumeral\the\numexpr#1\relax 000\relax}
+\long\def\r@plicate#1\relax#2{\r@plic@te{#2}#1\@nil}
+\long\def\r@plic@te#1#2{\if m#2#1\expandafter\r@plic@te\else\expandafter\@gobble\fi{#1}}
+
+\def\len#1{\lenA0#1\relax}
+\def\lenA#1#2{\ifx\relax#2\empty#1\else \expandafter\lenA\the\numexpr#1+\@ne\expandafter\relax \fi}
+
+\def\qloop#1#2#3{%
+    #1\z@
+    \loop #3\advance#1\@ne \ifnum#1<#2\repeat
+}
+\def\rloop#1#2#3{%
+    #1#2\advance#1\m@ne
+    \loop #3\advance#1\m@ne \ifnum#1>\m@ne\repeat
+}
+
+\def\tprefix{^^1b}
+
+\def\ttcolor#1{\tprefix[3\csname tc/#1\endcsname m} \def\ttcolorb#1{\tprefix[3\csname tc/#1\endcsname;1m}
+\def\tbcolor#1{\tprefix[4\csname tc/#1\endcsname m} \def\tbcolorb#1{\tprefix[4\csname tc/#1\endcsname;1m}
+\def\ttbold{\tprefix[1m} \def\ttul{\tprefix[4m} \def\trev{\tprefix[7m}
+\def\tup#1{\tprefix[#1A} \def\tdown#1{\tprefix[#1B} \def\tright#1{\tprefix[#1C} \def\tleft#1{\tprefix[#1D}
+\def\treset{\tprefix[0m}
+
+\def\tclearline#1{\tprefix[#1K}
+\def\tclearscreen#1{\tprefix[#1J}
+
+\def\tsetx#1{\tprefix[#1G}
+\def\tsetxy#1#2{\tprefix[#2;#1H}
+
+\def\tc@new#1#2{\csdef{tc/#1}{#2}}
+\tc@new{black}   0
+\tc@new{red}     1
+\tc@new{green}   2
+\tc@new{yellow}  3
+\tc@new{blue}    4
+\tc@new{magenta} 5
+\tc@new{cyan}    6
+\tc@new{white}   7
+\let\tc@new\@undefined
+
+\chardef\@escape=18
+\protected\def\escape{\immediate\write\@escape}
+\protected\def\techo#1{\escape{echo "#1"}} \protected\def\techon#1{\escape{echo -n "#1"}}
+\protected\def\n{\message{^^J}}
+
