@@ -3,7 +3,7 @@ Terminal-based 2048 game implemented in TeX.
 ### Building
 
 ```
-$ (tex|pdftex|xetex|luatex) -shell-escape main
+$ (etex|pdftex|xetex|luatex) -shell-escape main
 ```
 
 `-shell-escape` is needed for escape codes.
