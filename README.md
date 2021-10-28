@@ -17,7 +17,6 @@ movement:
 < h     l >  +  ENTER
      j
      v
-
 ```
 
 `bye` or `^D` to quit.
