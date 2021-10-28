@@ -20,18 +20,20 @@
         \let\next\boardmu
     \else\if l#1
         \let\next\boardmr
-    \else\if s\@car#1\@nil
-        \edef\next{\noexpand\boardset #1\@nil}%
+    \else\if s\expandafter\@car#1\@nil
+        \edef\next{\noexpand\boardset \expandafter\@cdr#1\@nil ,\noexpand\@nil,\noexpand\displayboard}%
     \else \boardunknown
     \fi\fi\fi\fi\fi \next
 }
-\def\boardunknown{\techo{\ttcolorb{red}Unrecognized input: \in\treset}}
-\def\boardset s #1 #2 #3\@nil{\csdef{board/#1:#2}{#3}\displayboard}
+\def\boardunknown{\techo{\ttcolorb{red}Unrecognized input: \expandafter\@car\in\@nil \treset}}
+
+\def\boardset#1,{\ifx\@nil#1\relax\else \expandafter\boardsetA\romannumeral-`0#1\@nil \expandafter\boardset \fi}
+\def\boardsetA#1 #2 #3\@nil{\csgdef{board/#1:#2}{#3}}
 
 \def\wrcell#1#2{%
     #1#2\boardsize{%
         \global\setcurrcell{\expandafter\@car\tmpa\@nil}%
-        \edef\tmpa{\expandafter\@cdr\tmpa\@nil}%
+        \edef\tmpa{\expandafter\@gobble\tmpa}%
     }%
 }
 
