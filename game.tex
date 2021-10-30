@@ -50,6 +50,10 @@
 \def\boardmr{\boardm\xx\yy\rloop}
 
 % \merge{{0}{1}{1}{0}{3}{0}{3}{4}{0}} -> {2}{5} @ \the\out
+% N.B. squishing direction matters!
+%      2 2 2 4
+%          move left  -> 4 2 4 0
+%          move right -> 0 0 2 8
 \newtoks\out
 \def\merge#1{\out{}\mergeA0#1\relax}
 \def\mergeA#1#2{%
