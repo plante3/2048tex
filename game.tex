@@ -30,69 +30,24 @@
 \def\boardset#1,{\ifx\@nil#1\relax\else \expandafter\boardsetA\romannumeral-`0#1\@nil \expandafter\boardset \fi}
 \def\boardsetA#1 #2 #3\@nil{\csgdef{board/#1:#2}{#3}}
 
-\def\wrcell#1#2{%
-    #1#2\boardsize{%
-        \global\setcurrcell{\expandafter\@car\tmpa\@nil}%
-        \edef\tmpa{\expandafter\@gobble\tmpa}%
-    }%
+\def\boardm#1#2#3{%
+    \cells{}%
+    \qloop#2\boardsize{%
+        \tmptokA{}%
+        {%
+        #3#1\boardsize{%
+            \tmptokA\expanded{{\the\tmptokA {\currcell}}}% stage cells in tl
+        }%
+        \squish                                          % the actual work
+        \wrcell#3#1%                                     % write back result
+        }%
+    }\randins \displayboard
 }
 
-\def\boardml{%
-    \cells{}%
-    \qloop\yy\boardsize{%
-        \tmptokA{}%
-        {%
-        \qloop\xx\boardsize{%
-            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
-            \setcurrcell{0}%
-        }%
-        \squish
-        \wrcell\qloop\xx
-        }%
-    }\randins \displayboard
-}
-\def\boardmd{%
-    \cells{}%
-    \qloop\xx\boardsize{%
-        \tmptokA{}%
-        {%
-        \rloop\yy\boardsize{%
-            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
-            \setcurrcell{0}%
-        }%
-        \squish
-        \wrcell\rloop\yy
-        }%
-    }\randins \displayboard
-}
-\def\boardmu{%
-    \cells{}%
-    \qloop\xx\boardsize{%
-        \tmptokA{}%
-        {%
-        \qloop\yy\boardsize{%
-            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
-            \setcurrcell{0}%
-        }%
-        \squish
-        \wrcell\qloop\yy
-        }%
-    }\randins \displayboard
-}
-\def\boardmr{%
-    \cells{}%
-    \qloop\yy\boardsize{%
-        \tmptokA{}%
-        {%
-        \rloop\xx\boardsize{%
-            \tmptokA\expanded{{\the\tmptokA {\currcell}}}%
-            \setcurrcell{0}%
-        }%
-        \squish
-        \wrcell\rloop\xx
-        }%
-    }\randins \displayboard
-}
+\def\boardml{\boardm\xx\yy\qloop}
+\def\boardmd{\boardm\yy\xx\rloop}
+\def\boardmu{\boardm\yy\xx\qloop}
+\def\boardmr{\boardm\xx\yy\rloop}
 
 % \merge{{0}{1}{1}{0}{3}{0}{3}{4}{0}} -> {2}{5} @ \the\out
 \newtoks\out
@@ -112,8 +67,15 @@
     \edef\tmpb{\the\out}%
     \ifx\tmpa\tmpb
         \tmpcntA \expandafter\len\expandafter{\the\out}%
-        \edef\tmpa{\the\out\replicate{\boardsize-\tmpcntA}{{0}}}%
-    \else \expandafter\squishA \fi
+        \edef\tmpa{\the\out\replicate{\boardsize-\tmpcntA}{{0}}}% pad with empty cells
+    \else \expandafter\squishA \fi                              % apply until no change between iterations
+}
+
+\def\wrcell#1#2{%
+    #1#2\boardsize{%
+        \global\setcurrcell{\expandafter\@car\tmpa\@nil}%
+        \edef\tmpa{\expandafter\@gobble\tmpa}%
+    }%
 }
 
 \def\randins{%
