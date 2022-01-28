@@ -1,12 +1,10 @@
 Terminal-based 2048 game implemented in TeX.
 
-### Building
+### Playing
 
 ```
-$ (etex|pdftex|xetex|luatex) -shell-escape main
+$ (etex|pdftex|xetex|luatex) -translate-file=natural.tcx main
 ```
-
-`-shell-escape` is needed for escape codes.
 
 ### Controls
 
@@ -19,6 +17,14 @@ movement:
      v
 ```
 
-`bye` or `^D` to quit.
+`bye` to quit.
+
+Occationally, there may be display glitches due to the way TeX wraps its output
+lines. To fix this, edit your `texmf.cnf` file (you may find it by running
+`kpsewhich -a texmf.cnf`, for me it is at `/etc/texmf/web2c/texmf.cnf`) and
+add/change the line
+```
+max_print_line=1000
+```
 
 ![Demo](https://github.com/plante3/2048tex/blob/main/demo.gif)

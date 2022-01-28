@@ -64,8 +64,7 @@
 \tc@new{white}   7
 \let\tc@new\@undefined
 
-\chardef\@escape=18
-\protected\def\escape{\immediate\write\@escape}
-\protected\def\techo#1{\escape{echo "#1"}} \protected\def\techon#1{\escape{echo -n "#1"}}
+\protected\def\techo#1{\immediate\write\sixt@@n{#1}}
+\protected\def\techon#1{\message{^^1b[D#1}}
 \protected\def\n{\message{^^J}}
 

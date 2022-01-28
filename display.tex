@@ -22,14 +22,14 @@
     ^^1b[38;2;%
     \ifnum#1<\thr@@ 119;110;101\else 249;246;242\fi
     m%
-    \ttbold\getcellval#1\treset\tmpb
+    \getcellval#1%
 }
 \def\displaycell#1{%
     \edef\tmpa##1{\tsetxy{\the\numexpr\xx*8+1}{\noexpand\the\numexpr\yy*4+##1}}
-    \edef\tmpb{\getcellcolor#1}%
+    \edef\tmpb{\getcellcolor{#1}}%
     \techo{\tmpa1\tcborder~~~~~~~~~\treset}%
     \techo{\tmpa2\tcborder~\tmpb~~~~~~~\tcborder~\treset}%
-    \techo{\tmpa3\tcborder~\tmpb~\centercell#1~\tcborder~\treset}%
+    \techo{\tmpa3\tcborder~\tmpb~\centercell#1~\tcborder~}%
     \techo{\tmpa4\tcborder~\tmpb~~~~~~~\tcborder~\treset}%
     \techo{\tmpa5\tcborder~~~~~~~~~\treset}%
 }

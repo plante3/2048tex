@@ -49,17 +49,12 @@
 \def\boardmu{\boardm\yy\xx\qloop}
 \def\boardmr{\boardm\xx\yy\rloop}
 
-% \merge{{0}{1}{1}{0}{3}{0}{3}{4}{0}} -> {2}{5} @ \the\out
-% N.B. squishing direction matters!
-%      2 2 2 4
-%          move left  -> 4 2 4 0
-%          move right -> 0 0 2 8
 \newtoks\out
 \def\merge#1{\out{}\mergeA0#1\relax}
 \def\mergeA#1#2{%
     \ifx\relax#2\toksapp\out{{#1}}\else
         \ifx0#2\def\next{\mergeA{#1}}\else
-        \ifnum#1=#2\edef\next{\noexpand\mergeA{\the\numexpr1+#1}}\global\advance\score\getcellval{\numexpr1+#1}\else
+        \ifnum#1=#2\edef\next{\noexpand\mergeA{\the\numexpr\@ne+#1}}\global\advance\score\getcellval{\numexpr1+#1}\else
         \ifnum#1=\z@\else \toksapp\out{{#1}}\fi \def\next{\mergeA{#2}}\fi\fi
         \expandafter\next
     \fi
