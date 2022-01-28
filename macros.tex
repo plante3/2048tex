@@ -31,12 +31,12 @@
 \def\lenA#1#2{\ifx\relax#2\empty#1\else \expandafter\lenA\the\numexpr#1+\@ne\expandafter\relax \fi}
 
 \def\qloop#1#2#3{%
-    #1\z@
-    \loop #3\advance#1\@ne \ifnum#1<#2\repeat
+	#1\z@
+	\loop #3\advance#1\@ne \ifnum#1<#2\repeat
 }
 \def\rloop#1#2#3{%
-    #1#2\advance#1\m@ne
-    \loop #3\advance#1\m@ne \ifnum#1>\m@ne\repeat
+	#1#2\advance#1\m@ne
+	\loop #3\advance#1\m@ne \ifnum#1>\m@ne\repeat
 }
 
 \def\tprefix{^^1b}
