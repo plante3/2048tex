@@ -5,6 +5,11 @@ Terminal-based 2048 game implemented in TeX.
 ```
 $ (etex|pdftex|xetex|luatex) -translate-file=natural.tcx main
 ```
+It is also possible to run the `main.tex` as an executable script. To do this add the line 
+```
+#!/usr/bin/env -S pdftex -translate-file=natural.tcx '\bgroup\let~\expandafter\catcode`#14~\futurelet~~~}\input'
+```
+to the start of `main.tex` and make it executable.
 
 ### Controls
 
