@@ -13,10 +13,9 @@
 		~\centercellval#1~~%
 	\else\ifnum#1<10
 		~\centercellval#1~%
-	\else\ifnum#1<13
+	\else
 		\centercellval#1~%
-	\else \centercellval#1%
-	\fi\fi\fi\fi\fi
+	\fi\fi\fi\fi
 }
 \def\centercellval#1{%
 	^^1b[38;2;%
@@ -40,7 +39,8 @@
 
 \def\getcellval#1{%
 	\ifcase#1 %
-	\or 2\or 4\or 8\or 16\or 32\or 64\or 128\or 256\or 512\or 1024\or 2048\or 4096\or 16384\or 32767\or 65536\or 131072\fi
+	\or 2\or 4\or 8\or 16\or 32\or 64\or 128\or 256\or 512\or 1024\or 2048\or 4096\or 16384\or 32767\or 65536\or 131072%
+	\else 2\string^#1\fi
 }
 \def\getcellcolor#1{%
 	\tprefix[48;2;\ifcase#1 %
