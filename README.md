@@ -3,7 +3,7 @@ Terminal-based 2048 game implemented in TeX.
 ### Playing
 
 ```
-$ (etex|pdftex|xetex|luatex) -translate-file=natural.tcx -cnf-line 'max_print_line=1000' main
+$ (etex|pdftex) -translate-file=natural.tcx -cnf-line 'max_print_line=1000' main
 ```
 It is also possible to run the `main.tex` as an executable script. To do this add the line 
 ```
@@ -22,6 +22,6 @@ movement:
      v
 ```
 
-`bye` to quit.
+`bye` or Ctrl+D to quit.
 
 ![Demo](https://github.com/plante3/2048tex/blob/main/demo.gif)
